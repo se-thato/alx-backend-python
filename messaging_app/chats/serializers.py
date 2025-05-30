@@ -14,16 +14,12 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        #fields
-        Conversation_id = serializers.CharField(source='conversation_id', read_only=True)
-        created_at = serializers.DateTimeField(read_only=True)
-        updated_at = serializers.DateTimeField(read_only=True)
+        fields = "__all__" 
 
-        def get_participant_count(self, obj):
-            return obj.participants.count()
+    def get_participants_count(self, obj):
+        return obj.participants.count()
 
-
-
+        
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
