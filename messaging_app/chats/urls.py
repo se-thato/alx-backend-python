@@ -4,12 +4,12 @@ from .views import ConversationViewSet, MessageViewSet
 
 
 
-router = DefaultRouter()
-router.register(r'conversations', ConversationViewSet, basename='conversation')
-router.register(r'messages', MessageViewSet, basename='message')
+routers = DefaultRouter()
+routers.register(r'conversations', ConversationViewSet, basename='conversation')
+routers.register(r'messages', MessageViewSet, basename='message')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('api/', include(routers.urls)),
 ]
 
 
