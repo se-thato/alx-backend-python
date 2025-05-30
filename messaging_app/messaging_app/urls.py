@@ -9,5 +9,8 @@ urlpatterns = [
     path('', include("chats.urls")),
 
     path('api/', include(routers.urls)),
+    
+    #enabling login and logout functionality for the API
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
