@@ -22,6 +22,9 @@ class ConversationSerializer(serializers.ModelSerializer):
         
 
 class MessageSerializer(serializers.ModelSerializer):
+    extra_text = serializers.CharField(required=False, allow_blank=True, max_length=255)
+
+    
     class Meta:
         model = Message
         fields = "__all__"
