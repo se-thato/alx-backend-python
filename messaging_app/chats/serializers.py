@@ -10,8 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
-        fields = "__all__"
-        read_only_fields = ['conversation_id', 'created_at', 'updated_at']
+        #fields
+        Conversation_id = serializers.CharField(source='conversation_id', read_only=True)
+        created_at = serializers.DateTimeField(read_only=True)
+        updated_at = serializers.DateTimeField(read_only=True)
+
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +22,3 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['message_id', 'sent_at']
 
-        
