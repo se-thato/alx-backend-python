@@ -7,12 +7,16 @@ import uuid
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True, null= True, blank=True)
+    user_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     email = models.EmailField(unique=True, null=True, blank=True)
+    password = models.CharField(max_length=128, null=True, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     date_joined = models.DateTimeField(default=timezone.now)
+
 
     def __str__(self):
         return self.username
