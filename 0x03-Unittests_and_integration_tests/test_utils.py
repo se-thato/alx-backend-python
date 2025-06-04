@@ -15,7 +15,7 @@ from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    #Unit tests for access_nested_map.
+    """Unit tests for access_nested_map."""
 
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
@@ -23,7 +23,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
     def test_access_nested_map(self, nested_map, path, expected):
-        #Test access_nested_map returns expected values
+        """Test access_nested_map returns expected values"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
@@ -31,21 +31,21 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"))
     ])
     def test_access_nested_map_exception(self, nested_map, path):
-        #Test access_nested_map raises KeyError for invalid path.
+        """Test access_nested_map raises KeyError for invalid path."""
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(str(cm.exception), repr(path[-1]))
 
 
 class TestGetJson(unittest.TestCase):
-    #Unit tests for get_json.
+    """Unit tests for get_json."""
 
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
     def test_get_json(self, test_url, test_payload):
-        #Test get_json returns expected result and makes one request.
+        """Test get_json returns expected result and makes one request."""
         mock_response = Mock()
         mock_response.json.return_value = test_payload
         with patch('utils.requests.get', return_value=mock_response) as mock_get:
@@ -55,10 +55,10 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-    #Unit tests for memoize decorator.
+    """Unit tests for memoize decorator."""
 
     def test_memoize(self):
-        #Test that memoize caches the result of a method.
+        """Test that memoize caches the result of a method."""
 
         class TestClass:
             def a_method(self):
