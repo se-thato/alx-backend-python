@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""
+Unit tests for utils module.
+
+This file contains tests for:
+- access_nested_map
+- get_json
+- memoize
+"""
+
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
