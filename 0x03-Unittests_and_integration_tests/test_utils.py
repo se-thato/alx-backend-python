@@ -20,7 +20,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestAccessNestedMapExceptions(unittest.TestCase):
-    @parameterized.expand ([
+    @parameterized.expand([
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
     ])
