@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'rest_auth',
     'django_filters',
     'oauth2_provider',
+    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     
 
 ]
@@ -128,6 +130,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         #Oauth2 authentication
         'rest_provider.contrib.rest_framework.OAuth2Authentication',
         
