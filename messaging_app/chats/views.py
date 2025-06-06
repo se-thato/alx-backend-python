@@ -2,10 +2,9 @@ from django.shortcuts import render
 from .serializers import ConversationSerializer, MessageSerializer
 from .models import Conversation, Message
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
-from .permissions import IsParticipantOrReadOnly
-
+from .permissions import IsParticipantOrReadOnly, IsParticipantOfConversation
 
 #this will be used to create views for the Conversation and Message models
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -16,7 +15,10 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all() 
     serializer_class = ConversationSerializer
-    permission_classes = (IsAuthenticated, IsParticipantOrReadOnly)
+    permission_classes = (IsAuthenticated, IsParticipantOrReadOnly, IsAdminUser, IsParticipantOfConversation)
+
+
+
 
 
 # this will be used to create views for the Message model
