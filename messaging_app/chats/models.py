@@ -25,6 +25,7 @@ class User(AbstractUser):
 #creating conversation model
 class Conversation(models.Model):
     conversation_id = models.CharField(max_length=255, unique=True)
+    conversation = models.CharField(max_length=255, null=True, blank=True)
     participants = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
