@@ -34,8 +34,11 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        # Only show messages from conversations the user participates in
-        return Message.objects.filter(conversation__participants=user)
+        queryset = Message.objects.filter(conversation__participants=user)
+        conversation_id = self.request.query_params.get('conversation_id')
+        if conversation_id is not None:
+            queryset = queryset.filter(conversation_id=conversation_id)
+        return queryset
     
 
     def perform_create(self, serializer):
