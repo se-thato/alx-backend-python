@@ -51,7 +51,10 @@ class TestGetJson(unittest.TestCase):
         with patch('utils.requests.get', return_value=mock_response) as mock_get:
             result = get_json(test_url)
             self.assertEqual(result, test_payload)
-            mock_get.assert_called_once_with(test_url)
+            mock_get.assert_called_once_with(
+                test_url
+            )
+            
 
 
 class TestMemoize(unittest.TestCase):
