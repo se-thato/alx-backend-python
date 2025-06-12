@@ -30,7 +30,7 @@ INSTALLED_APPS = [
 
     'chats',
     'messaging',
-    
+
     'rest_framework',
     'corsheaders',
     'rest_auth',
@@ -176,3 +176,9 @@ SIMPLE_JWT = {
 }
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

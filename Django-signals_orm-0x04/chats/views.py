@@ -6,6 +6,9 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsParticipantOrReadOnly, IsParticipantOfConversation
 from rest_framework.exceptions import PermissionDenied
+from django.views.decorators.cache import cache_page
+
+
 
 #this will be used to create views for the Conversation and Message models
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -19,6 +22,10 @@ class ConversationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsParticipantOrReadOnly, IsAdminUser, IsParticipantOfConversation)
 
 
+@cache_page(60)
+def conversation_messages(request, conversation_id):
+    messages = Message.objects.filter(conversation_id=conversation_id).select_related('sender').order_by('timestamp')
+    return render(request, 'chats/', {'messages': messages})
 
 
 
