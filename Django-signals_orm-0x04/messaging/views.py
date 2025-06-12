@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .models import Message
+from django.views.decorators.cache import cache_page
+
+
+
 
 @login_required
 def delete_user(request):
@@ -57,3 +61,10 @@ def unread_inbox(request):
     return render(request, 'messaging/', {
         'unread_messages': unread_messages
     })
+
+
+
+@cache_page(60)
+def message_list(request):
+    messages = Message.objects.select_related('sender', 'receiver').order_by('-timestamp')
+    return render(request, 'messaging/', {'messages': messages})
