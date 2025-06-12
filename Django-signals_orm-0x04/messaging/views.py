@@ -50,8 +50,7 @@ def user_conversations(request):
 #unread messages views
 @login_required
 def unread_inbox(request):
-    unread_messages = Message.unread.for_user(request.user)
-
-    return render(request, 'messaging/', {
+    unread_messages = Message.unread.unread_for_user(request.user) 
+    return render(request, 'messaging/unread_inbox.html', {
         'unread_messages': unread_messages
     })

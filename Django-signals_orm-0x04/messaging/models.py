@@ -4,12 +4,12 @@ from django.conf import settings
 
 
 class UnreadMessagesManager(models.Manager):
-    def for_user(self, user):
+    def unread_for_user(self, user):
         return self.get_queryset().filter(
             receiver=user,
             read=False
         ).select_related('sender').only('sender', 'content', 'timestamp')
-    
+
 
 
 class Message(models.Model):
