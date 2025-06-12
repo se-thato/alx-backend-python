@@ -8,6 +8,7 @@ routers = DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("chats.urls")),
+    path('', include("messaging.urls")),
 
     path('api/', include(routers.urls)),
     

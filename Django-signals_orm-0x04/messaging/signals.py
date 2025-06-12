@@ -1,5 +1,6 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 from .models import Message, Notification, MessageHistory
 
 
@@ -24,3 +25,18 @@ def log_message_edit(sender, instance, **kwargs):
                 instance.edited = True 
         except Message.DoesNotExist:
             pass
+
+
+
+
+User = get_user_model()
+
+@receiver(post_delete, sender=User)
+def delete_related_data(sender, instance, **kwargs):
+    # Clean up any lingering MessageHistory where edited_by was the deleted user
+    MessageHistory.objects.filter(edited_by=instance).delete()
+
+    # Redundant safety check: delete messages or notifications just in case
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+    Notification.objects.filter(user=instance).delete()
