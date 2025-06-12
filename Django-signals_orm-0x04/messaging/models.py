@@ -2,6 +2,16 @@ from django.db import models
 from django.conf import settings
 
 
+
+class UnreadMessagesManager(models.Manager):
+    def for_user(self, user):
+        return self.get_queryset().filter(
+            receiver=user,
+            read=False
+        ).select_related('sender').only('sender', 'content', 'timestamp')
+    
+
+
 class Message(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='messaging_sent_messages', on_delete=models.CASCADE)
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_messages', on_delete=models.CASCADE)
@@ -9,9 +19,13 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
     parent_message = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    read = models.BooleanField(default=False)
+    objects = models.Manager() 
+    unread = UnreadMessagesManager() 
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver}: {self.content[:20]}"
+    
 
 
 class MessageHistory(models.Model):
@@ -22,7 +36,7 @@ class MessageHistory(models.Model):
 
     def __str__(self):
         return f'Edit history of Message ID {self.message.id} at {self.edited_at} by {self.edited_by}'
-
+    
 
 class Notification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notifications', on_delete=models.CASCADE)

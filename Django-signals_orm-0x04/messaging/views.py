@@ -44,3 +44,14 @@ def user_conversations(request):
     threads = [build_thread(msg) for msg in top_level_messages]
 
     return render(request, 'messaging/', {'threads': threads})
+
+
+
+#unread messages views
+@login_required
+def unread_inbox(request):
+    unread_messages = Message.unread.for_user(request.user)
+
+    return render(request, 'messaging/', {
+        'unread_messages': unread_messages
+    })
