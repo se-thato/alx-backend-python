@@ -21,7 +21,7 @@ def cache_query(func):
     @functools.wraps(func)
     def wrapper(conn, query, *args, **kwargs):
         if query in query_cache:
-            print("🔁 Returning cached result")
+            print("Returning cached result")
             return query_cache[query]
         else:
             print("📡 Executing new query and caching result")
