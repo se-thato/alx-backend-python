@@ -1,23 +1,34 @@
-# Use official Python image as base
-FROM python:3.10
+# Use official Python base image
+FROM python:3.10-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-
-# Set working directory inside container
+# Set working directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install system dependencies for mysqlclient
+RUN apt-get update \
+    && apt-get install -y \
+        gcc \
+        default-libmysqlclient-dev \
+        libssl-dev \
+        build-essential \
+        pkg-config \
+    && apt-get clean
 
-# Copy project code
-COPY . /app/
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Expose port 8000 (default for Django)
+# Copy project files
+COPY . .
+
+# Expose Django default port
 EXPOSE 8000
 
-# Default command to run the Django app
+# Start the server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
