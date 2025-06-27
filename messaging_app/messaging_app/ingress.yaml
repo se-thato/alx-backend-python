@@ -13,6 +13,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: messaging-app-service 
+            name: messaging-app-service
             port:
               number: 80
+
+
+
