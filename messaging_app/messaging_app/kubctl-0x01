@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#telling kubernetes how many copies do i want
+echo "Scaling app to 3 replicas..."
+kubectl scale deployment django-messaging-app --replicas=3
+
+#making sure scalling worked
+echo "Checking running pods..."
+kubectl get pods
+
+#Perform load testing using wrk
+echo "Starting load testing using wrk..."
+wrk -t2 -c100 -d10s http://<10.98.254.4:80
+
+#Monitor resource usage using kubectl top
+#checking how much CPU and memory the app is using while under pressure
+echo "Monitoring resource usage..."
+kubectl top pods
+
