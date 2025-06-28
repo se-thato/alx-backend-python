@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: messaging-app-container
-        image: se-thato/messaging-app:latest   # <-- Docker image
+        image: se-thato/messaging-app:v2.0   # <-- Docker image
         ports:
         - containerPort: 8000
 

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "🚀 Starting Rolling Update to v2.0..."
+
+# 1. Apply updated deployment file
+kubectl apply -f blue_deployment.yaml
+
+# 2. Monitor the rollout status
+echo "📡 Watching rollout progress..."
+kubectl rollout status deployment/django-blue
+
+# 3. Test for downtime using curl in background
+echo "🔄 Testing app availability during update..."
+SERVICE_IP=$(minikube service messaging-app-service --url)
+echo "Service URL: $SERVICE_IP"
+
+echo "Sending test requests with curl..."
+for i in {1..10}
+do
+  curl -s $SERVICE_IP/api/ || echo "❌ Failed"
+  sleep 1
+done
+
+# 4. Show current pods
+echo "📦 Current running pods:"
+kubectl get pods -l app=messaging-blue
