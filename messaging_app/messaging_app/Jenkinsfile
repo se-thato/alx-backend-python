@@ -2,66 +2,45 @@ pipeline {
     agent any
 
     environment {
-        VENV = 'venv'
-        DOCKER_IMAGE = 'yourdockerhubusername/messaging_app'
+        REPO_URL = 'https://github.com/yourusername/alx-backend-python.git'
+        BRANCH_NAME = 'main'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/yourusername/alx-backend-python.git', branch: 'main'
+                git credentialsId: 'github-creds', url: "${REPO_URL}", branch: "${BRANCH_NAME}"
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 sh '''
-                cd messaging_app
                 python3 -m venv venv
                 . venv/bin/activate
-                pip install -r requirements.txt
+                pip3 install --upgrade pip
+                pip3 install -r messaging_app/requirements.txt
                 '''
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Tests with Pytest') {
             steps {
                 sh '''
-                cd messaging_app
                 . venv/bin/activate
-                pytest --junitxml=report.xml
+                pytest messaging_app --junitxml=messaging_app/report.xml
                 '''
             }
         }
 
-        stage('Publish Report') {
+        stage('Publish Test Report') {
             steps {
                 junit 'messaging_app/report.xml'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh '''
-                cd messaging_app
-                docker build -t $DOCKER_IMAGE:latest .
-                '''
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    docker push $DOCKER_IMAGE:latest
-                    '''
-                }
             }
         }
     }
 
     triggers {
-        // No automatic triggers; manual execution only
+        // No automatic trigger; manual only
     }
 }
