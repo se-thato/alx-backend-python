@@ -178,3 +178,14 @@ SIMPLE_JWT = {
 }
 
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('messaging_db', 'default_db'),
+        'USER': os.environ.get('root', 'default_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'default_pass'),
+        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DB_PORT', '3306'),
+    }
+}
