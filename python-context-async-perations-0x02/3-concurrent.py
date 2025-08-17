@@ -51,19 +51,19 @@ async def setup_sample_database(db_name: str = DB_NAME) -> None:
             await db.commit()
 
 
-async def async_fetch_users(db_name: str = DB_NAME) -> List[Tuple[Any, ...]]:
+async def async_fetch_users() -> List[Tuple[Any, ...]]:
     """Fetch all users asynchronously."""
-    async with aiosqlite.connect(db_name) as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cur = await db.execute("SELECT * FROM users")
         rows = await cur.fetchall()
         await cur.close()
     return rows
 
 
-async def async_fetch_older_users(age_threshold: int = 40, db_name: str = DB_NAME) -> List[Tuple[Any, ...]]:
-    """Fetch users older than the provided age_threshold asynchronously."""
-    async with aiosqlite.connect(db_name) as db:
-        cur = await db.execute("SELECT * FROM users WHERE age > ?", (age_threshold,))
+async def async_fetch_older_users() -> List[Tuple[Any, ...]]:
+    """Fetch users older than 40 asynchronously."""
+    async with aiosqlite.connect(DB_NAME) as db:
+        cur = await db.execute("SELECT * FROM users WHERE age > ?", (40,))
         rows = await cur.fetchall()
         await cur.close()
     return rows
@@ -73,8 +73,8 @@ async def fetch_concurrently() -> None:
     """Run async_fetch_users and async_fetch_older_users concurrently and print results."""
     await setup_sample_database(DB_NAME)
 
-    all_users_task = async_fetch_users(DB_NAME)
-    older_users_task = async_fetch_older_users(40, DB_NAME)
+    all_users_task = async_fetch_users()
+    older_users_task = async_fetch_older_users()
 
     all_users, older_users = await asyncio.gather(all_users_task, older_users_task)
 
