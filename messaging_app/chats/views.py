@@ -20,8 +20,6 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
 
 
-
-
 # this will be used to create views for the Message model
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
