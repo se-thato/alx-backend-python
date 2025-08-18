@@ -3,8 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views as jwt_views
 
-
-routers = DefaultRouter()
+routers.DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("chats.urls")),
